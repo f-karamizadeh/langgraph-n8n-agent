@@ -1,0 +1,137 @@
+{
+  "name": "write_email_webhook",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "write_email",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -464,
+        -144
+      ],
+      "id": "ae1e7ced-55dd-415b-9ab7-256cef17b40e",
+      "name": "Webhook",
+      "webhookId": "05262ae2-db1b-43e8-9f0f-85a3427bdfe8"
+    },
+    {
+      "parameters": {
+        "fromEmail": "fakazadeh@gmail.com",
+        "toEmail": "f.karamizadeh@gmail.com",
+        "subject": "{{$json[\"text\"]}}",
+        "html": "در واقع مدارس خصوصی زیادی وجود دارد.\nthis is an Email from n8n\n{{$json[\"text\"]}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        -240,
+        -144
+      ],
+      "id": "4c3aab2c-754c-477a-851a-4f55a0251650",
+      "name": "Send an Email",
+      "webhookId": "21eb6468-6e3c-4d99-a960-937d16fb5484",
+      "credentials": {
+        "smtp": {
+          "id": "PE7gSsXpVzjVG8m0",
+          "name": "SMTP account"
+        }
+      },
+      "onError": "continueErrorOutput",
+      "notes": "Error in send-mail in n8n"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"my_field_1\": \"{{$json[text]}}\",\n  \"my_field_2\": 1\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        16,
+        -144
+      ],
+      "id": "024e1b26-f965-48cf-bb99-e483d80db7e9",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"status\": \"success\",\n  \"message\": \"Email sent\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        224,
+        -144
+      ],
+      "id": "85c9ac3f-f58a-4ce8-a330-cb78fdf78174",
+      "name": "Respond to Webhook",
+      "notes": "Error from last node in n8n"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Send an Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send an Email": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "8d5e477b-7477-46bf-b247-da7d8072b397",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5cb58bf337a3365e1bd2793124119f859ce4e2c8b0ebee0d91380c9afffea4bf"
+  },
+  "id": "dtYI2FiOuFVQkXYW",
+  "tags": []
+}
